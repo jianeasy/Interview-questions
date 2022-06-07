@@ -9,3 +9,11 @@ const typeOf = (obj)=>{
     return obj.constructor.name.toLowerCase()
 }
 console.log(typeOf('asdsadsaa'));
+console.log(typeOf(12334));
+console.log(typeOf(new Map()));
+console.log(typeOf(()=>{}));
+console.log(typeOf(new Array(6)));
+console.log(typeOf(new Object()));
+
+
+
