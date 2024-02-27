@@ -5,7 +5,7 @@ const quickSort = (arr, l, r) => {
 
     let i = l;
     let j = r;
-    const base = arr[i];
+    const base = arr[l];
     while (i < j) {
         while (arr[j] >= base && i < j) {
             j--;

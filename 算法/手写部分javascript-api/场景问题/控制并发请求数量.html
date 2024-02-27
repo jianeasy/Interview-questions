@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <script>
+      const requestLimit = async (tasks, maxConcurrent) => {
+        let running = 0; //
+        let runningTaskQueue = [];
+        const result = [];
+        for (let i = 0; i < tasks.length; i++) {
+          const e = Promise.resolve().then(tasks[i]);
+          result.push(e);
+          e.then((res) => {
+            const index = runningTaskQueue.indexOf(e);
+            runningTaskQueue.splice(index, 1);
+          });
+          runningTaskQueue.push(e);
+
+          if (runningTaskQueue.length >= maxConcurrent) {
+            await Promise.race(runningTaskQueue);
+          }
+        }
+        const allData = await Promise.all(result);
+        console.log(allData);
+      };
+      const fetch = (url) => {
+        console.log(`${url},已发送`);
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({ value: `${url},已完成` });
+          }, 1000);
+        });
+      };
+      const testFn = () => {
+        const tasks = [];
+        for (let i = 0; i < 20; i++) {
+          tasks.push(() => axios.get(`http://localhost:3000/user?id=${i}`));
+        }
+        requestLimit(tasks, 2);
+      };
+    </script>
+    <button onclick="testFn()">开始请求</button>
+  </body>
+</html>

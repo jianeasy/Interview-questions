@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const sequentialExecution = async (list) => {
+        for (let index = 0; index < list.length; index++) {
+          const res = await list[index]();
+          console.log(res);
+        }
+      };
+
+      const fetch = (url) => {
+        console.log(`${url},已发送`);
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({ value: `${url},已完成` });
+          }, 1000);
+        });
+      };
+      const testFn = () => {
+        const tasks = [];
+        for (let i = 0; i < 20; i++) {
+          tasks.push(() => fetch(`http://localhost:3000/user?id=${i}`));
+        }
+        sequentialExecution(tasks);
+      };
+    </script>
+    <button onclick="testFn()">开始执行</button>
+  </body>
+</html>

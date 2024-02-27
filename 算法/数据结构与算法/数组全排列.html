@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数组全排列</title>
+  </head>
+  <body>
+    <script>
+      function permute(nums) {
+        function dfs(nums, len, depth, path, used) {
+          if (len == depth) {
+            res.push([...path]);
+            return;
+          }
+          for (let i = 0; i < len; i++) {
+            if (!used[i]) {
+              // 当前元素在此路径未被使用
+              path.push(nums[i]);
+              used[i] = true;
+              dfs(nums, len, depth + 1, path, used);
+              // 回溯
+              used[i] = false;
+              path.splice(path.length - 1);
+            }
+          }
+        }
+        const res = [];
+        let len = nums.length;
+        let depth = 0;
+        let path = [];
+        let used = new Array(nums.length);
+        used.fill(false);
+        dfs(nums, len, depth, path, used);
+        return res;
+      }
+
+      const res = permute([1, 2, 3]);
+      console.log("res", res);
+    </script>
+  </body>
+</html>
