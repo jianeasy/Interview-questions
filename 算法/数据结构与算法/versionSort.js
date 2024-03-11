@@ -16,4 +16,6 @@ const versionSort = (list) => {
   });
 };
 
-console.log(versionSort(["0.111111.0", "2.1.1", "0.2.3", "1.23.0"]));
+console.log(
+  versionSort(["0.111111.0", "2.1.1", "0.2.3", "0.2.3", "1.23.0"])
+);

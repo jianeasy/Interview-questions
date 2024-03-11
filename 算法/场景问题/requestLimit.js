@@ -1,20 +1,5 @@
 const requestLimit = async (tasks, maxConcurrent) => {
-  let runningTaskQueue = [];
-  const result = [];
-  for (let i = 0; i < tasks.length; i++) {
-    const e = Promise.resolve().then(tasks[i]);
-    runningTaskQueue.push(e);
-    result.push(e);
-    e.then((res) => {
-      console.log(res);
-      const completedIndex = runningTaskQueue.indexOf(e);
-      runningTaskQueue.splice(completedIndex, 1);
-    });
-
-    if (runningTaskQueue.length >= maxConcurrent) {
-      await Promise.race(runningTaskQueue);
-    }
-  }
+  
 };
 const req = (url) => {
   console.log(`${url},已发送`);

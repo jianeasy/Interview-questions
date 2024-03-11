@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Node {
+        constructor(key, value) {
+          this.key = key;
+          this.value = value;
+        }
+        key;
+        value;
+        prev;
+        next;
+      }
+      class LRUCache {
+        constructor(capacity) {
+          this.capacity = capacity;
+          this.dummy.prev = this.dummy;
+          this.dummy.next = this.dummy;
+        }
+        capacity = 0;
+        dummy = new Node(0, 0); //哨兵节点
+        map = new Map();
+        get = (key) => {
+          let node = this.getNode(key);
+          return node ? node.value : -1;
+        };
+        put = (key, value) => {
+          let node = this.getNode(key);
+          if (node) {
+            node.value = value; // 更新value
+            return;
+          } else {
+            // 新建
+            let node = new Node(key, value);
+            this.map.set(key, node);
+            this.pushFront(node); // 将新建的节点放在头结点
+            if (this.map.size > this.capacity) {
+              // 超出容量
+              let backNode = this.dummy.prev;
+              this.map.delete(backNode.key);
+              this.remove(backNode);
+            }
+          }
+        };
+
+        getNode = (key) => {
+          if (this.map.has(key)) {
+            const node = this.map.get(key);
+            this.remove(node);
+            this.pushFront(node);
+            return node;
+          } else {
+            return null;
+          }
+        };
+        remove = (node) => {
+          node.prev.next = node.next;
+          node.next.prev = node.prev;
+        };
+        pushFront = (node) => {
+          node.prev = this.dummy;
+          node.next = this.dummy.next;
+          node.prev.next = node;
+          node.next.prev = node;
+        };
+      }
+    </script>
+  </body>
+</html>

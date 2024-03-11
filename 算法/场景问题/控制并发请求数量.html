@@ -13,16 +13,22 @@
         let runningTaskQueue = [];
         const result = [];
         for (let i = 0; i < tasks.length; i++) {
-          const e = Promise.resolve().then(tasks[i]);
+          const e = Promise.resolve().t
+          hen(tasks[i]);
           result.push(e);
           e.then((res) => {
+
             const index = runningTaskQueue.indexOf(e);
             runningTaskQueue.splice(index, 1);
           });
           runningTaskQueue.push(e);
 
           if (runningTaskQueue.length >= maxConcurrent) {
-            await Promise.race(runningTaskQueue);
+            try {
+              await Promise.race(runningTaskQueue);
+            } catch (error) {
+              result.push(error)
+            }
           }
         }
         const allData = await Promise.all(result);
